@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface MovieRepository {
     @GET(".")
-    fun getAvengerMovies(
+    fun getMovies(
         @Query("s") query: String = "Avengers",
         @Query("r") returnType: String = "json",
         @Query("page") page: Int = 1

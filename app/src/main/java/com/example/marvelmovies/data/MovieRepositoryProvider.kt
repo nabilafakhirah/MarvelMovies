@@ -11,7 +11,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MovieRepositoryProvider {
     fun getAvengerMovies(): Observable<MovieResponse> {
-        return createService().getAvengerMovies()
+        return createService().getMovies()
+    }
+
+    fun getMarvelMovies(): Observable<MovieResponse> {
+        return createService().getMovies(query = "Marvel")
     }
 
     private fun createService(): MovieRepository {

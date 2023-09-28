@@ -1,6 +1,5 @@
 package com.example.marvelmovies.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,28 +12,46 @@ import io.reactivex.schedulers.Schedulers
 
 class AvengerMoviesViewModel : ViewModel(), DefaultLifecycleObserver {
     private val movieRepositoryProvider = MovieRepositoryProvider()
-    val searchList = mutableStateOf(listOf<Movie>())
-    val mutableLiveDataSearchList: MutableLiveData<List<Movie>> by lazy {
+    val avengerList: MutableLiveData<List<Movie>> by lazy {
+        MutableLiveData<List<Movie>>()
+    }
+    val marvelList: MutableLiveData<List<Movie>> by lazy {
         MutableLiveData<List<Movie>>()
     }
 
     init {
-        initiateData()
+        initiateAvengerData()
+        initiateMarvelData()
     }
 
-    private fun initiateData() {
+    private fun initiateAvengerData() {
         movieRepositoryProvider.getAvengerMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { it.Search }
             .subscribe(
-                ::populateSearchList,
+                ::populateAvengerList,
                 ::onError
             )
     }
 
-    private fun populateSearchList(list: List<Search>) {
-        searchList.value = list.map {
+    private fun initiateMarvelData() {
+        movieRepositoryProvider.getMarvelMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { it.Search }
+            .subscribe(
+                ::populateMarvelList,
+                ::onError
+            )
+    }
+
+    private fun initiateTrendingToday() {
+
+    }
+
+    private fun populateAvengerList(list: List<Search>) {
+        avengerList.value = list.map {
             Movie(
                 title = it.Title,
                 year = it.Year,
@@ -43,7 +60,10 @@ class AvengerMoviesViewModel : ViewModel(), DefaultLifecycleObserver {
                 poster = it.Poster,
             )
         }
-        mutableLiveDataSearchList.value = list.map {
+    }
+
+    private fun populateMarvelList(list: List<Search>) {
+        marvelList.value = list.map {
             Movie(
                 title = it.Title,
                 year = it.Year,

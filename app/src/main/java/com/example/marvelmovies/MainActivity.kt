@@ -9,10 +9,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import com.example.marvelmovies.data.Search
 import com.example.marvelmovies.ui.theme.MarvelMoviesTheme
-import com.example.marvelmovies.ui.theme.response
+import com.example.marvelmovies.ui.theme.Typography
+import com.example.marvelmovies.viewmodel.AvengerMoviesViewModel
+import com.example.marvelmovies.viewmodel.AvengerMoviesViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +30,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val viewModel = ViewModelProvider(this,
+                        AvengerMoviesViewModelFactory())[AvengerMoviesViewModel::class.java]
+                    Greeting(
+                        name = "Android",
+                        viewModel = viewModel,
+                    )
                 }
             }
         }
@@ -32,18 +43,19 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Log.v("MOVIE_TAG", response.body().toString())
+fun Greeting(
+    name: String,
+    viewModel: AvengerMoviesViewModel,
+    modifier: Modifier = Modifier,) {
+    val searchList by remember { viewModel.searchList }
     Text(
         text = "Hello $name!",
         modifier = modifier
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MarvelMoviesTheme {
-        Greeting("Android")
+    searchList.forEach {
+        Text(
+            text = it.title,
+            style = Typography.headlineLarge
+        )
     }
 }

@@ -3,15 +3,15 @@ package com.example.marvelmovies.data
 import com.google.gson.annotations.SerializedName
 
 data class MovieResponse(
-    @SerializedName("Search") val search: Search,
+    @SerializedName("Search") val Search: List<Search>,
     @SerializedName("totalResults") val totalResults: String,
     @SerializedName("Response") val response: String,
 )
 
 data class Search(
-    @SerializedName("Title") val title: String,
-    @SerializedName("Year") val year: String,
-    @SerializedName("imdbID") val imdbId: String,
-    @SerializedName("Type") val type: String,
-    @SerializedName("Poster") val poster: String,
+    @SerializedName("Title") val Title: String,
+    @SerializedName("Year") val Year: String,
+    @SerializedName("imdbID") val imdbID: String,
+    @SerializedName("Type") val Type: String,
+    @SerializedName("Poster") val Poster: String,
 )

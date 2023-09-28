@@ -2,6 +2,7 @@ package com.example.marvelmovies.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.marvelmovies.data.MovieRepositoryProvider
@@ -13,6 +14,9 @@ import io.reactivex.schedulers.Schedulers
 class AvengerMoviesViewModel : ViewModel(), DefaultLifecycleObserver {
     private val movieRepositoryProvider = MovieRepositoryProvider()
     val searchList = mutableStateOf(listOf<Movie>())
+    val mutableLiveDataSearchList: MutableLiveData<List<Movie>> by lazy {
+        MutableLiveData<List<Movie>>()
+    }
 
     init {
         initiateData()
@@ -31,6 +35,15 @@ class AvengerMoviesViewModel : ViewModel(), DefaultLifecycleObserver {
 
     private fun populateSearchList(list: List<Search>) {
         searchList.value = list.map {
+            Movie(
+                title = it.Title,
+                year = it.Year,
+                imdbId = it.imdbID,
+                type = it.Type,
+                poster = it.Poster,
+            )
+        }
+        mutableLiveDataSearchList.value = list.map {
             Movie(
                 title = it.Title,
                 year = it.Year,

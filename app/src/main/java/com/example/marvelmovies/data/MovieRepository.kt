@@ -16,5 +16,5 @@ interface MovieRepository {
     fun getMovieDetails(
         @Query("i") query: String = "",
         @Query("r") returnType: String = "json"
-    ): Observable<MovieResponse>
+    ): Observable<MovieDetailResponse>
 }

@@ -9,4 +9,6 @@
     <string name="latest_series">Latest Series</string>
     <string name="trending_today">Trending Today</string>
     <string name="coming_soon">Feature Coming Soon!</string>
+
+    <string name="ratings">Ratings</string>
 </resources>

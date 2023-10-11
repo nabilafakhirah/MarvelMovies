@@ -42,27 +42,43 @@ class HomeFragment: Fragment(), LifecycleOwner {
         val latestSeriesRv = view.findViewById<RecyclerView>(R.id.latestSeriesRv)
         val trendingTodayRv = view.findViewById<RecyclerView>(R.id.trendingTodayRv)
 
-        val navigateToDetail = {
-            findNavController().navigate(R.id.action_to_movie_detail)
-        }
-
         val avengerObserver = Observer<List<Movie>> { movieList ->
-            setUpWideRecyclerView(latestMoviesRv, movieList, navigateToDetail)
+            setUpWideRecyclerView(
+                recyclerView = latestMoviesRv,
+                movieList = movieList,
+                navigate = {
+                    navigateToMovieDetail(it)
+                })
             allMovies.addAll(movieList)
         }
         val marvelObserver = Observer<List<Movie>> { movieList ->
-            setUpWideRecyclerView(latestSeriesRv, movieList, navigateToDetail)
+            setUpWideRecyclerView(
+                recyclerView = latestSeriesRv,
+                movieList = movieList,
+                navigate = {
+                    navigateToMovieDetail(it)
+                })
             allMovies.addAll(movieList)
-            setUpWideRecyclerView(trendingTodayRv, allMovies, navigateToDetail)
+            setUpWideRecyclerView(
+                recyclerView = trendingTodayRv,
+                movieList = movieList,
+                navigate = {
+                    navigateToMovieDetail(it)
+                })
         }
         viewModel.avengerList.observe(viewLifecycleOwner, avengerObserver)
         viewModel.marvelList.observe(viewLifecycleOwner, marvelObserver)
     }
 
-    private fun setUpWideRecyclerView(recyclerView: RecyclerView, movieList: List<Movie>, navigate: () -> Unit) {
+    private fun setUpWideRecyclerView(recyclerView: RecyclerView, movieList: List<Movie>, navigate: (String) -> Unit) {
         recyclerView.layoutManager =
             this.context?.let { LoopingLayoutManager(it, LoopingLayoutManager.HORIZONTAL, false) }
         val adapter = WideMovieAdapter(movieList, navigate)
         recyclerView.adapter = adapter
+    }
+
+    private fun navigateToMovieDetail(imdbId: String) {
+        val action = HomeFragmentDirections.actionToMovieDetail(imdbId = imdbId)
+        findNavController().navigate(action)
     }
 }

@@ -18,6 +18,10 @@ class MovieRepositoryProvider {
         return createService().getMovies(query = "Marvel")
     }
 
+    fun getMovieDetails(query: String): Observable<MovieDetailResponse> {
+        return createService().getMovieDetails(query = query)
+    }
+
     private fun createService(): MovieRepository {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             if (BuildConfig.DEBUG) {

@@ -16,7 +16,11 @@
     <fragment
         android:id="@+id/movie_details_activity"
         android:name="com.example.marvelmovies.ui.MovieDetailsFragment"
-        tools:layout="@layout/fragment_movie_details"
-        />
+        tools:layout="@layout/fragment_movie_details">
+        <argument
+            android:name="imdbId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 
 </navigation>

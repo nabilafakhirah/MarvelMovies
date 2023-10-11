@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.marvelmovies.data.MovieRepositoryProvider
 import com.example.marvelmovies.data.Search
 import com.example.marvelmovies.model.Movie
+import com.example.marvelmovies.model.Rating
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -46,10 +47,6 @@ class AvengerMoviesViewModel : ViewModel(), DefaultLifecycleObserver {
             )
     }
 
-    private fun initiateTrendingToday() {
-
-    }
-
     private fun populateAvengerList(list: List<Search>) {
         avengerList.value = list.map {
             Movie(
@@ -58,6 +55,7 @@ class AvengerMoviesViewModel : ViewModel(), DefaultLifecycleObserver {
                 imdbId = it.imdbID,
                 type = it.Type,
                 poster = it.Poster,
+                ratings = listOf(),
             )
         }
     }
@@ -70,6 +68,7 @@ class AvengerMoviesViewModel : ViewModel(), DefaultLifecycleObserver {
                 imdbId = it.imdbID,
                 type = it.Type,
                 poster = it.Poster,
+                ratings = listOf(),
             )
         }
     }

@@ -11,16 +11,23 @@ import com.example.marvelmovies.R
 import com.example.marvelmovies.model.Movie
 
 class WideMovieAdapter(
-    private val movies: List<Movie>
+    private val movies: List<Movie>,
+    private val navigate: () -> Unit,
 ) : RecyclerView.Adapter<WideMovieAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val wideMovieImage = itemView.findViewById<ImageView>(R.id.wideMovieImg)
-        fun bind(movie: Movie) {
+        fun bind(
+            movie: Movie,
+            navigate: () -> Unit
+        ) {
             Glide.with(wideMovieImage.context)
                 .load(movie.poster)
                 .apply(RequestOptions.overrideOf(300, 220).centerCrop())
                 .into(wideMovieImage)
+            wideMovieImage.setOnClickListener {
+                navigate()
+            }
         }
     }
 
@@ -32,5 +39,5 @@ class WideMovieAdapter(
     override fun getItemCount(): Int = movies.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(movies[position])
+        holder.bind(movies[position], navigate)
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bekawestberg.loopinglayout.library.LoopingLayoutManager
 import com.example.marvelmovies.R
@@ -40,23 +41,28 @@ class HomeFragment: Fragment(), LifecycleOwner {
         val latestMoviesRv = view.findViewById<RecyclerView>(R.id.latestMoviesRv)
         val latestSeriesRv = view.findViewById<RecyclerView>(R.id.latestSeriesRv)
         val trendingTodayRv = view.findViewById<RecyclerView>(R.id.trendingTodayRv)
+
+        val navigateToDetail = {
+            findNavController().navigate(R.id.action_to_movie_detail)
+        }
+
         val avengerObserver = Observer<List<Movie>> { movieList ->
-            setUpWideRecyclerView(latestMoviesRv, movieList)
+            setUpWideRecyclerView(latestMoviesRv, movieList, navigateToDetail)
             allMovies.addAll(movieList)
         }
         val marvelObserver = Observer<List<Movie>> { movieList ->
-            setUpWideRecyclerView(latestSeriesRv, movieList)
+            setUpWideRecyclerView(latestSeriesRv, movieList, navigateToDetail)
             allMovies.addAll(movieList)
-            setUpWideRecyclerView(trendingTodayRv, allMovies)
+            setUpWideRecyclerView(trendingTodayRv, allMovies, navigateToDetail)
         }
         viewModel.avengerList.observe(viewLifecycleOwner, avengerObserver)
         viewModel.marvelList.observe(viewLifecycleOwner, marvelObserver)
     }
 
-    private fun setUpWideRecyclerView(recyclerView: RecyclerView, movieList: List<Movie>) {
+    private fun setUpWideRecyclerView(recyclerView: RecyclerView, movieList: List<Movie>, navigate: () -> Unit) {
         recyclerView.layoutManager =
             this.context?.let { LoopingLayoutManager(it, LoopingLayoutManager.HORIZONTAL, false) }
-        val adapter = WideMovieAdapter(movieList)
+        val adapter = WideMovieAdapter(movieList, navigate)
         recyclerView.adapter = adapter
     }
 }

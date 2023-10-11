@@ -11,32 +11,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
-
-        val homeFragment = HomeFragment()
-        val downloadsFragment = DownloadsFragment()
-        val categoriesFragment = CategoriesFragment()
-        val moreFragment = MoreFragment()
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-
-        setCurrentFragment(homeFragment)
-
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.home_menu -> setCurrentFragment(homeFragment)
-                R.id.downloads_menu -> setCurrentFragment(downloadsFragment)
-                R.id.categories_menu -> setCurrentFragment(categoriesFragment)
-                R.id.more_menu -> setCurrentFragment(moreFragment)
-
-            }
-            true
-        }
-
     }
-
-    private fun setCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flFragment,fragment)
-            commit()
-        }
 
 }
